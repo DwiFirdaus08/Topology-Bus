@@ -1,0 +1,3 @@
+Data: 'Informasi Penting' - Status: Gagal - Tidak ada penerima siap
+Data: 'cek data' - Status: Penerima 1
+Data: 'halo' - Status: Penerima 1

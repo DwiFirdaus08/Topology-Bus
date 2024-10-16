@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Topologi Bus</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e9f1f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .bus-line {
+            width: 80%;
+            height: 5px;
+            background-color: #333;
+            margin: 20px auto;
+            position: relative;
+        }
+        .devices {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .device-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .device {
+            width: 60px;
+            height: 60px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .device-label {
+            font-size: 14px;
+            margin-top: -5px;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #27ae60;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #555;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulasi Topologi Bus</h1>
+        <div class="bus-line"></div>
+        <div class="devices">
+            <div class="device-container">
+                <div class="device" id="sender"></div>
+                <div class="device-label">Pengirim</div>
+            </div>
+            <div class="device-container">
+                <div class="device" id="receiver1"></div>
+                <div class="device-label">Penerima 1</div>
+            </div>
+            <div class="device-container">
+                <div class="device" id="receiver2"></div>
+                <div class="device-label">Penerima 2</div>
+            </div>
+            <div class="device-container">
+                <div class="device" id="receiver3"></div>
+                <div class="device-label">Penerima 3</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="dataInput" placeholder="Masukkan data yang ingin dikirim">
+            <button onclick="startSimulation()">Mulai Pengiriman</button>
+        </div>
+        
+        <div class="status" id="status">
+            Status: Menunggu data untuk dikirim...
+        </div>
+    </div>
+
+    <script>
+        function startSimulation() {
+            const data = document.getElementById('dataInput').value.trim();
+            const statusElement = document.getElementById('status');
+
+            if (data === "") {
+                statusElement.innerText = "Status: Masukkan data terlebih dahulu!";
+                return;
+            }
+
+            // Reset warna penerima
+            resetReceiverColors();
+
+            statusElement.innerText = `Status: Mengirim data "${data}"...\n`;
+
+            // Simulasi pengecekan siap/tidak siap secara acak
+            setTimeout(() => {
+                const receiver1Ready = isReceiverReady();
+
+                // Logika error: Jika Penerima 1 tidak siap, semua penerima juga dianggap tidak siap
+                if (receiver1Ready) {
+                    // Penerima 1 siap, data berhasil dikirim
+                    updateStatus("Penerima 1", data);
+                    document.getElementById('receiver1').style.backgroundColor = "#2ecc71";
+                } else {
+                    // Penerima 1 tidak siap, seluruh sistem gagal
+                    statusElement.innerText += `Penerima 1 tidak siap. Seluruh sistem gagal. Tidak ada penerima yang dapat menerima data.\n`;
+                    document.getElementById('receiver1').style.backgroundColor = "#e74c3c";
+                    document.getElementById('receiver2').style.backgroundColor = "#e74c3c";
+                    document.getElementById('receiver3').style.backgroundColor = "#e74c3c";
+                }
+            }, 2000);
+        }
+
+        function isReceiverReady() {
+            // Menghasilkan true atau false secara acak untuk mensimulasikan siap/tidak siap
+            return Math.random() < 0.5;
+        }
+
+        function updateStatus(receiver, data) {
+            const statusElement = document.getElementById('status');
+            statusElement.innerText += `Data "${data}" berhasil diterima di ${receiver}!\n`;
+        }
+
+        function resetReceiverColors() {
+            document.getElementById('receiver1').style.backgroundColor = "#3498db";
+            document.getElementById('receiver2').style.backgroundColor = "#3498db";
+            document.getElementById('receiver3').style.backgroundColor = "#3498db";
+        }
+    </script>
+</body>
+</html>
