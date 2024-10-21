@@ -26,7 +26,7 @@ class BusTopology:
         print(f"\n{sender} mengirim data: '{data}' ke bus...")
         time.sleep(1)  # Simulasi jeda waktu pengiriman
 
-        # Randomize apakah Penerima 1 rusak atau tidak
+        # apakah Penerima 1 rusak atau tidak
         self.randomize_device_failure()
 
         # Cek status Penerima 1 dulu
@@ -53,8 +53,6 @@ class BusTopology:
         with open("log.txt", "a") as log_file:
             log_file.write(f"Data: '{data}' - Status: {status}\n")
 
-
-# Contoh Penggunaan:
 bus = BusTopology()
 
 print("=== SIMULASI TOPOLOGI BUS ===")
